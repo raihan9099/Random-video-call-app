@@ -1,6 +1,6 @@
-import { initializeApp, getApps } from 'firebase/app';
-import { getDatabase } from 'firebase/database';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
+import { getDatabase, type Database } from 'firebase/database';
+import { getAuth, GoogleAuthProvider, type Auth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -13,10 +13,21 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-
-const db = getDatabase(app);
-const auth = getAuth(app);
+let app: FirebaseApp | undefined = undefined;
+let db: Database | undefined = undefined;
+let auth: Auth | undefined = undefined;
 const googleProvider = new GoogleAuthProvider();
+
+if (firebaseConfig.apiKey) {
+  try {
+    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+    if (firebaseConfig.databaseURL) {
+      db = getDatabase(app);
+    }
+    auth = getAuth(app);
+  } catch (err) {
+    console.warn("Firebase initialization warning:", err);
+  }
+}
 
 export { db, auth, googleProvider };

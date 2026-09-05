@@ -1,0 +1,11 @@
+{
+  "name": "Funkey",
+  "description": "Random Video Chat & Live Stranger Calls",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
